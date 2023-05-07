@@ -1,7 +1,7 @@
 import PostLoading from "./PostLoading";
 import PromptCard from "./PromptCard";
 
-const Profile = ({ name, desc, data, handleEdit, handleDelete }) => {
+const Profile = ({ name, desc, data, handleEdit, handleDelete,isLoading }) => {
   return (
     <section className='w-full'>
       <h1 className='head_text text-left'>
@@ -18,8 +18,12 @@ const Profile = ({ name, desc, data, handleEdit, handleDelete }) => {
             handleDelete={() => handleDelete && handleDelete(post)}
           />
         ))}
-        {data.length === 0 && <PostLoading/>}
-      </div>
+        {isLoading && <PostLoading/>}
+        </div>
+        
+        {data.length === 0 && !isLoading && <div>
+        <p className="not_found_text text-gray-500">{name === "" ? "This account" : "You"} currently have no post.</p>
+      </div>} 
     </section>
   );
 };

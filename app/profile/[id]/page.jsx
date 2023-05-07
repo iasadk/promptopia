@@ -9,11 +9,14 @@ const UserProfile = () => {
   const [posts, setPosts] = useState([]);
   const params = useParams();
   const searchParams = useSearchParams();
+  const [isLoading, setIsLoading] = useState(false);
+
   const fetchPosts = async () => {
+    setIsLoading(true);
     const response = await fetch(`/api/users/${params?.id}/posts`);
     const data = await response.json();
-
     setPosts(data);
+    setIsLoading(false);
   };
 
   async function handleEdit(post) {
@@ -49,6 +52,7 @@ const UserProfile = () => {
       data={posts}
       handleEdit={handleEdit}
       handleDelete={handleDelete}
+      isLoading={isLoading}
     />
   );
 };

@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import PromptCard from "./PromptCard";
 import PostLoading from "./PostLoading";
 import PostLoadingRow from "./PostLoadingRow";
+import Link from "next/link";
 
 const PromptCardList = ({ data, handleTagClick }) => {
   return (
@@ -27,12 +28,15 @@ const Feed = () => {
   const [searchText, setSearchText] = useState("");
   const [searchTimeout, setSearchTimeout] = useState(null);
   const [searchedResults, setSearchedResults] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+
 
   const fetchPosts = async () => {
+    setIsLoading(true);
     const response = await fetch("/api/prompt");
     const data = await response.json();
-
     setAllPosts(data);
+    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -87,7 +91,11 @@ const Feed = () => {
     {searchText ? <PromptCardList data={searchedResults} handleTagClick={handleTagClick} /> : <PromptCardList data={allPosts} handleTagClick={handleTagClick} />}
     
     </section>
-    {allPosts.length === 0 && <PostLoadingRow/>}
+    {isLoading && <PostLoadingRow/>}
+    {allPosts.length === 0 && !isLoading && <div>
+      <p className="blue_gradient not_found_text text-gray-500">No one have added Post Yet. </p>
+      <p className="text-center text-gray-500 mt-4">Be first to add. <Link href={"/create-prompt"} className="orange_gradient border-b-2 border-orange-400">Create Post</Link></p>
+    </div>}
     </>
   );
 };
