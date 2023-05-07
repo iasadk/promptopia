@@ -1,5 +1,6 @@
 "use client"
 import Profile from '@/components/Profile';
+import { AuthException } from '@/lib/exceptions';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import React, { useState,useEffect } from 'react'
@@ -8,6 +9,7 @@ const MyProfile = () => {
   const {data: session} = useSession();
   const [posts, setPosts] = useState([])
   const router = useRouter();
+
   const fetchPosts = async () => {
     const response = await fetch(`/api/users/${session?.user.id}/posts`);
     const data = await response.json();
@@ -38,7 +40,7 @@ const MyProfile = () => {
     }
   };
   useEffect(() => {
-    console.log(session)
+  if(!session) throw new AuthException()
     if(session?.user.id) fetchPosts();
   }, []);
   return (
