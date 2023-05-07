@@ -1,3 +1,4 @@
+import PostLoading from "./PostLoading";
 import PromptCard from "./PromptCard";
 
 const Profile = ({ name, desc, data, handleEdit, handleDelete }) => {
@@ -17,6 +18,7 @@ const Profile = ({ name, desc, data, handleEdit, handleDelete }) => {
             handleDelete={() => handleDelete && handleDelete(post)}
           />
         ))}
+        {data.length === 0 && <PostLoading/>}
       </div>
     </section>
   );
