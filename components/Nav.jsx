@@ -122,7 +122,6 @@ const Nav = () => {
                   type='button'
                   key={provider.name}
                   onClick={() => {
-                    e.preventDefault();
                     signIn(provider.id);
                   }}
                   className='black_btn'
